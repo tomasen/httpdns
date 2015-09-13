@@ -1,5 +1,6 @@
-提供 httpdns 和 showmyip 两种服务
+提供 httpdns 和 showmyip 两种服务 in golang
 
+[![Build Status](https://travis-ci.org/Tomasen/httpdns.svg?branch=master)](https://travis-ci.org/Tomasen/httpdns)
 [![GoDoc](https://godoc.org/github.com/Tomasen/httpdns?status.svg)](http://godoc.org/github.com/Tomasen/httpdns)
 
 #APIs
@@ -13,14 +14,14 @@
 | 1154 | tcp  | 无 | 字符串类型，请求者的IP + '\\n'，并关闭连接 |
 
 
-#Contribution
+## Developing
 
 Commited code must pass:
 
-`golint`
-`go vet`
-`gofmt`
-`go test`
+* [golint](https://github.com/golang/lint)
+* [go vet](https://godoc.org/golang.org/x/tools/cmd/vet)
+* [gofmt](https://golang.org/cmd/gofmt)
+* [go test](https://golang.org/cmd/go/#hdr-Test_packages):
 
 # TODO
 

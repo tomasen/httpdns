@@ -8,35 +8,44 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"runtime/debug"
 	"syscall"
 
 	"github.com/Tomasen/realip"
 )
 
 const (
-	MAX_OPENFILE      uint64 = 128000
-	MAX_DOMAIN_LENGTH        = 288 // 255 according to rfc3986
+	// max open file should at least be
+	_MaxOpenfile uint64 = 128000
+
+	// max domain string length should be 255
+	// 255 according to rfc3986. padding is added
+	_MaxDomainLength = 288
 )
 
 const (
-	QUERY_DNS int8 = 1 << iota
-	QUERY_MYIP
+	// types of query
+	queryTypeDNS int8 = 1 << iota
+	queryTypeMYIP
 )
-func LogError(v interface{}) {
+
+func logError(v ...interface{}) {
 	// TODO: log error but with a rate limit and a rate record
 }
 
-func QueryDNS(domain string, src_ip string) []byte {
+// QueryDNS lookup IP from specified domain
+func QueryDNS(domain string, srcip string) []byte {
 	// TODO: use edns-client-subnet from google or other service provider
 
 	ips, err := net.LookupIP(domain)
 	if err != nil {
-		LogError(err)
+		logError(err)
 		return nil
 	}
 	return ips[rand.Intn(len(ips))]
 }
 
+// HTTPServerDNS is handler of httpdns query
 func HTTPServerDNS(w http.ResponseWriter, req *http.Request) {
 	domain := req.Form.Get("d")
 	if len(domain) == 0 {
@@ -46,14 +55,17 @@ func HTTPServerDNS(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte(QueryDNS(domain, realip.RealIP(req))))
 }
 
+// HTTPServerMYIP is handler of show-my-ip query
 func HTTPServerMYIP(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte(realip.RealIP(req)))
 }
 
+// HTTPServerHealth is handler of health check query
 func HTTPServerHealth(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte("OK"))
 }
 
+// TCPServer is handler for all tcp queries
 func TCPServer(l net.Listener, t int8) {
 	defer l.Close()
 	for {
@@ -69,6 +81,7 @@ func TCPServer(l net.Listener, t int8) {
 			defer func() {
 				if r := recover(); r != nil {
 					// TODO: log error
+					logError("Recovered in", r, ":", string(debug.Stack()))
 				}
 			}()
 			defer c.Close()
@@ -80,14 +93,14 @@ func TCPServer(l net.Listener, t int8) {
 
 			var r []byte
 			switch t {
-			case QUERY_DNS:
-				line, _, err := bufio.NewReaderSize(c, MAX_DOMAIN_LENGTH).ReadLine()
+			case queryTypeDNS:
+				line, _, err := bufio.NewReaderSize(c, _MaxDomainLength).ReadLine()
 				if err != nil {
 					// TODO: log error
 					return
 				}
 				r = QueryDNS(string(line), c.RemoteAddr().String())
-			case QUERY_MYIP:
+			case queryTypeMYIP:
 				r = []byte(c.RemoteAddr().String())
 			}
 			c.Write(r)
@@ -101,9 +114,9 @@ func main() {
 
 	lim := syscall.Rlimit{}
 	syscall.Getrlimit(syscall.RLIMIT_NOFILE, &lim)
-	if lim.Cur < MAX_OPENFILE || lim.Max < MAX_OPENFILE {
-		lim.Cur = MAX_OPENFILE
-		lim.Max = MAX_OPENFILE
+	if lim.Cur < _MaxOpenfile || lim.Max < _MaxOpenfile {
+		lim.Cur = _MaxOpenfile
+		lim.Max = _MaxOpenfile
 		syscall.Setrlimit(syscall.RLIMIT_NOFILE, &lim)
 	}
 
@@ -111,13 +124,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	go TCPServer(ln, QUERY_DNS)
+	go TCPServer(ln, queryTypeDNS)
 
 	ln, err = net.Listen("tcp", ":1154")
 	if err != nil {
 		log.Fatal(err)
 	}
-	go TCPServer(ln, QUERY_MYIP)
+	go TCPServer(ln, queryTypeMYIP)
 
 	http.HandleFunc("/myip", HTTPServerMYIP)
 	http.HandleFunc("/dns", HTTPServerDNS)
