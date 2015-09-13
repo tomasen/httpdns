@@ -1,0 +1,12 @@
+FROM golang:latest
+MAINTAINER Tomasen "https://github.com/Tomasen"
+
+# Copy the local package files to the container's workspace.
+ADD . /go/src/github.com/tomasen/httpdns
+
+RUN go install github.com/tomasen/httpdns
+
+# Run the outyet command by default when the container starts.
+ENTRYPOINT /go/bin/httpdns
+
+EXPOSE 1053 1153 1154
