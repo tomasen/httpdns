@@ -1,3 +1,4 @@
+Provide httpdns and showmyip services in golang.
 提供 httpdns 和 showmyip 两种服务 in golang
 
 [![Build Status](https://travis-ci.org/Tomasen/httpdns.svg?branch=master)](https://travis-ci.org/Tomasen/httpdns)
