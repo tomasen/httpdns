@@ -37,12 +37,12 @@ func logError(v ...interface{}) {
 func QueryDNS(domain string, srcip string) []byte {
 	// TODO: use edns-client-subnet from google or other service provider
 
-	ips, err := net.LookupIP(domain)
+	ips, err := net.LookupHost(domain)
 	if err != nil {
 		logError(err)
 		return nil
 	}
-	return ips[rand.Intn(len(ips))]
+	return []byte(ips[rand.Intn(len(ips))])
 }
 
 // HTTPServerDNS is handler of httpdns query
@@ -90,7 +90,7 @@ func TCPServer(l net.Listener, t int8) {
 			// GET / HTTP/1.1rn
 			// Host: 192.168.0.11rn
 			// rn
-
+			h, _, _ := net.SplitHostPort(c.RemoteAddr().String())
 			var r []byte
 			switch t {
 			case queryTypeDNS:
@@ -99,9 +99,9 @@ func TCPServer(l net.Listener, t int8) {
 					// TODO: log error
 					return
 				}
-				r = QueryDNS(string(line), c.RemoteAddr().String())
+				r = QueryDNS(string(line), h)
 			case queryTypeMYIP:
-				r = []byte(c.RemoteAddr().String())
+				r = []byte(h)
 			}
 			c.Write(r)
 		}(conn)

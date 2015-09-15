@@ -4,7 +4,7 @@ Provide httpdns and showmyip services in golang.
 [![Build Status](https://travis-ci.org/Tomasen/httpdns.svg?branch=master)](https://travis-ci.org/Tomasen/httpdns)
 [![GoDoc](https://godoc.org/github.com/Tomasen/httpdns?status.svg)](http://godoc.org/github.com/Tomasen/httpdns)
 
-#APIs
+## APIs
 
 | 端口 | 协议 | 请求 | 返回 |
 | ------ | ------ | ------ | ------ |
@@ -14,6 +14,9 @@ Provide httpdns and showmyip services in golang.
 | 1153 | tcp  | 字符串类型，$domain + "\\n" | 字符串，该域名的ip地址 |
 | 1154 | tcp  | 无 | 字符串类型，请求者的IP + '\\n'，并关闭连接 |
 
+## Deployment
+
+`docker run -p 1053:1053 -p 1153-1154:1153-1154 tomasen/httpdns`
 
 ## Developing
 

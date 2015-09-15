@@ -9,6 +9,9 @@ WORKDIR /go/src/github.com/tomasen/httpdns
 RUN go get .
 RUN go install
 
+RUN rm -rf /go/src/*
+WORKDIR /go/bin
+
 # Run the httpdns command by default when the container starts.
 ENTRYPOINT /go/bin/httpdns
 
