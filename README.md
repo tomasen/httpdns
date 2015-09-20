@@ -1,18 +1,17 @@
-Provide httpdns and showmyip services in golang.
-提供 httpdns 和 showmyip 两种服务 in golang
+Provide httpdns and show-my-ip services in golang.
 
 [![Build Status](https://travis-ci.org/Tomasen/httpdns.svg?branch=master)](https://travis-ci.org/Tomasen/httpdns)
 [![GoDoc](https://godoc.org/github.com/Tomasen/httpdns?status.svg)](http://godoc.org/github.com/Tomasen/httpdns)
 
 ## APIs
 
-| 端口 | 协议 | 请求 | 返回 |
+| port | scheme | request | response |
 | ------ | ------ | ------ | ------ |
-| 1053 | http | /dns?d={$domain} | 字符串，该域名的ip地址 |
-| 1053 | http | /myip | 字符串，请求者的IP |
-| 1053 | http | /health | 字符串，"OK" |
-| 1153 | tcp  | 字符串类型，$domain + "\\n" | 字符串，该域名的ip地址 |
-| 1154 | tcp  | 无 | 字符串类型，请求者的IP + '\\n'，并关闭连接 |
+| 1053 | http | /dns?d={$domain} | type: string, ip address of $domain |
+| 1053 | http | /myip | type: string, ip address of client |
+| 1053 | http | /health | type: string, "OK" indicate health |
+| 1153 | tcp  | type: string, $domain + "\\n" | type: string, ip address of $domain |
+| 1154 | tcp  | not required | type: string，ip address of client + '\\n' |
 
 ## Deployment
 
@@ -30,5 +29,3 @@ Commited code must pass:
 # TODO
 
 * test cases
-* Dockerfile
-* continue deployment on AWS and aliyun
