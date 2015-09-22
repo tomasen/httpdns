@@ -1,7 +1,7 @@
 Provide httpdns and show-my-ip services in golang.
 
-[![Build Status](https://travis-ci.org/Tomasen/httpdns.svg?branch=master)](https://travis-ci.org/Tomasen/httpdns)
-[![GoDoc](https://godoc.org/github.com/Tomasen/httpdns?status.svg)](http://godoc.org/github.com/Tomasen/httpdns)
+[![Build Status](https://travis-ci.org/tomasen/httpdns.svg?branch=master)](https://travis-ci.org/tomasen/httpdns)
+[![GoDoc](https://godoc.org/github.com/tomasen/httpdns?status.svg)](http://godoc.org/github.com/Tomasen/httpdns)
 
 ## APIs
 
