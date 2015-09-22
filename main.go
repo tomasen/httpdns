@@ -47,10 +47,9 @@ func QueryDNS(domain string, srcip string) []byte {
 
 // HTTPServerDNS is handler of httpdns query
 func HTTPServerDNS(w http.ResponseWriter, req *http.Request) {
-
 	domain := req.URL.Query().Get("d")
 	if len(domain) == 0 {
-		domain := req.Form.Get("d")
+		domain = req.Form.Get("d")
 		if len(domain) == 0 {
 			http.NotFound(w, req)
 			return
