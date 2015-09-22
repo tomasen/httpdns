@@ -24,7 +24,7 @@ Commited code must pass:
 * [golint](https://github.com/golang/lint)
 * [go vet](https://godoc.org/golang.org/x/tools/cmd/vet)
 * [gofmt](https://golang.org/cmd/gofmt)
-* [go test](https://golang.org/cmd/go/#hdr-Test_packages):
+* [go test](https://golang.org/cmd/go/#hdr-Test_packages)
 
 # TODO
 
