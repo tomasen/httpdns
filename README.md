@@ -28,4 +28,6 @@ Commited code must pass:
 
 # TODO
 
-* test cases
+[ ] support set record manualy with ttl expiration time
+[ ] support location optimaized result
+[ ] more test cases
