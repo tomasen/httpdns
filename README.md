@@ -1,7 +1,6 @@
 Provide httpdns and show-my-ip services in golang.
 
 [![Build Status](https://travis-ci.org/tomasen/httpdns.svg?branch=master)](https://travis-ci.org/tomasen/httpdns)
-[![GoDoc](https://godoc.org/github.com/tomasen/httpdns?status.svg)](http://godoc.org/github.com/Tomasen/httpdns)
 [![Coverage Status](https://coveralls.io/repos/tomasen/httpdns/badge.svg?branch=master&service=github)](https://coveralls.io/github/tomasen/httpdns?branch=master)
 
 ## APIs
@@ -29,6 +28,6 @@ Commited code must pass:
 
 # TODO
 
-[ ] support set record manualy with ttl expiration time
-[ ] support location optimaized result
-[ ] more test cases
+- [ ] support set record manualy with ttl expiration time
+- [ ] support location optimaized result
+- [ ] more test cases
