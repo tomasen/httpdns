@@ -10,8 +10,10 @@ import (
 	"runtime"
 	"runtime/debug"
 	"syscall"
+	"sync/atomic"
+	"sync"
 
-	"github.com/Tomasen/realip"
+	"github.com/tomasen/realip"
 )
 
 const (
@@ -28,6 +30,17 @@ const (
 	queryTypeDNS int8 = 1 << iota
 	queryTypeMYIP
 )
+
+var (
+	_AddrCacheMutex sync.Mutex
+	_AddrCache      atomic.Value
+)
+
+type _AddrMap map[string][]byte
+
+func init() {
+	_AddrCache.Store(make(_AddrMap))
+}
 
 func logError(v ...interface{}) {
 	// TODO: log error but with a rate limit and a rate record
