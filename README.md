@@ -31,3 +31,4 @@ Commited code must pass:
 - [ ] support set record manualy with ttl expiration time
 - [ ] support location optimaized result
 - [ ] more test cases
+- [ ] return carriar & geo info
